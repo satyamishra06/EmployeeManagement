@@ -33,4 +33,24 @@ public class EmployeesController : ControllerBase
 
         return Ok(employee);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateEmployee(int id, Employee employee)
+    {
+        var existingEmployee = await _context.Employees.FindAsync(id);
+
+        if (existingEmployee == null)
+        {
+            return NotFound();
+        }
+
+        existingEmployee.Name = employee.Name;
+        existingEmployee.Email = employee.Email;
+        existingEmployee.Department = employee.Department;
+        existingEmployee.Salary = employee.Salary;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(existingEmployee);
+    }
 }
