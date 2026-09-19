@@ -69,3 +69,14 @@ Content-Type: application/json
 ### Test Employee Not Found
 GET {{EmployeeManagement_HostAddress}}/api/employees/9999
 Accept: application/json
+
+### Test Update Non-Existing Employee
+PUT {{EmployeeManagement_HostAddress}}/api/employees/9999
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test@example.com",
+  "department": "IT",
+  "salary": 50000
+}
