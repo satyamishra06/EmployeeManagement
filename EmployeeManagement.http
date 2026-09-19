@@ -80,3 +80,6 @@ Content-Type: application/json
   "department": "IT",
   "salary": 50000
 }
+
+### Test Delete Non-Existing Employee
+DELETE {{EmployeeManagement_HostAddress}}/api/employees/9999
