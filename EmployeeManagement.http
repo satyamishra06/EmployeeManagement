@@ -43,3 +43,14 @@ Content-Type: application/json
 ### Get Employee By ID
 GET {{EmployeeManagement_HostAddress}}/api/employees/2
 Accept: application/json
+
+### Test Invalid Employee
+POST {{EmployeeManagement_HostAddress}}/api/employees
+Content-Type: application/json
+
+{
+  "name": "",
+  "email": "wrong-email",
+  "department": "",
+  "salary": -5000
+}
