@@ -16,6 +16,7 @@ public class EmployeesController : ControllerBase
         _context = context;
     }
 
+    // GET: api/employees
     [HttpGet]
     public async Task<IActionResult> GetEmployees()
     {
@@ -24,6 +25,7 @@ public class EmployeesController : ControllerBase
         return Ok(employees);
     }
 
+    // POST: api/employees
     [HttpPost]
     public async Task<IActionResult> CreateEmployee(Employee employee)
     {
@@ -34,6 +36,7 @@ public class EmployeesController : ControllerBase
         return Ok(employee);
     }
 
+    // PUT: api/employees/{id}
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateEmployee(int id, Employee employee)
     {
@@ -52,5 +55,23 @@ public class EmployeesController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok(existingEmployee);
+    }
+
+    // DELETE: api/employees/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteEmployee(int id)
+    {
+        var employee = await _context.Employees.FindAsync(id);
+
+        if (employee == null)
+        {
+            return NotFound();
+        }
+
+        _context.Employees.Remove(employee);
+
+        await _context.SaveChangesAsync();
+
+        return Ok(employee);
     }
 }

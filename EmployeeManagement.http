@@ -25,3 +25,6 @@ Content-Type: application/json
   "department": "Software Development",
   "salary": 60000
 }
+
+### Delete Employee
+DELETE {{EmployeeManagement_HostAddress}}/api/employees/1
