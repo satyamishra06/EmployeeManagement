@@ -14,17 +14,41 @@ public class EmployeeService : IEmployeeService
         _context = context;
     }
 
-    public async Task<List<Employee>> GetAllEmployeesAsync()
+    public async Task<List<EmployeeResponseDto>> GetAllEmployeesAsync()
     {
-        return await _context.Employees.ToListAsync();
+        var employees = await _context.Employees.ToListAsync();
+
+        return employees.Select(employee => new EmployeeResponseDto
+        {
+            Id = employee.Id,
+            Name = employee.Name,
+            Email = employee.Email,
+            Department = employee.Department,
+            Salary = employee.Salary
+        }).ToList();
     }
 
-    public async Task<Employee?> GetEmployeeByIdAsync(int id)
+    public async Task<EmployeeResponseDto?> GetEmployeeByIdAsync(int id)
     {
-        return await _context.Employees.FindAsync(id);
+        var employee = await _context.Employees.FindAsync(id);
+
+        if (employee == null)
+        {
+            return null;
+        }
+
+        return new EmployeeResponseDto
+        {
+            Id = employee.Id,
+            Name = employee.Name,
+            Email = employee.Email,
+            Department = employee.Department,
+            Salary = employee.Salary
+        };
     }
 
-    public async Task<Employee> CreateEmployeeAsync(EmployeeDto employeeDto)
+    public async Task<EmployeeResponseDto> CreateEmployeeAsync(
+        EmployeeDto employeeDto)
     {
         var employee = new Employee
         {
@@ -38,10 +62,17 @@ public class EmployeeService : IEmployeeService
 
         await _context.SaveChangesAsync();
 
-        return employee;
+        return new EmployeeResponseDto
+        {
+            Id = employee.Id,
+            Name = employee.Name,
+            Email = employee.Email,
+            Department = employee.Department,
+            Salary = employee.Salary
+        };
     }
 
-    public async Task<Employee?> UpdateEmployeeAsync(
+    public async Task<EmployeeResponseDto?> UpdateEmployeeAsync(
         int id,
         EmployeeDto employeeDto)
     {
@@ -59,10 +90,17 @@ public class EmployeeService : IEmployeeService
 
         await _context.SaveChangesAsync();
 
-        return existingEmployee;
+        return new EmployeeResponseDto
+        {
+            Id = existingEmployee.Id,
+            Name = existingEmployee.Name,
+            Email = existingEmployee.Email,
+            Department = existingEmployee.Department,
+            Salary = existingEmployee.Salary
+        };
     }
 
-    public async Task<Employee?> DeleteEmployeeAsync(int id)
+    public async Task<EmployeeResponseDto?> DeleteEmployeeAsync(int id)
     {
         var employee = await _context.Employees.FindAsync(id);
 
@@ -75,6 +113,13 @@ public class EmployeeService : IEmployeeService
 
         await _context.SaveChangesAsync();
 
-        return employee;
+        return new EmployeeResponseDto
+        {
+            Id = employee.Id,
+            Name = employee.Name,
+            Email = employee.Email,
+            Department = employee.Department,
+            Salary = employee.Salary
+        };
     }
 }

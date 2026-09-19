@@ -1,17 +1,18 @@
 using EmployeeManagement.DTOs;
-using EmployeeManagement.Models;
 
 namespace EmployeeManagement.Services;
 
 public interface IEmployeeService
 {
-    Task<List<Employee>> GetAllEmployeesAsync();
+    Task<List<EmployeeResponseDto>> GetAllEmployeesAsync();
 
-    Task<Employee?> GetEmployeeByIdAsync(int id);
+    Task<EmployeeResponseDto?> GetEmployeeByIdAsync(int id);
 
-    Task<Employee> CreateEmployeeAsync(EmployeeDto employeeDto);
+    Task<EmployeeResponseDto> CreateEmployeeAsync(EmployeeDto employeeDto);
 
-    Task<Employee?> UpdateEmployeeAsync(int id, EmployeeDto employeeDto);
+    Task<EmployeeResponseDto?> UpdateEmployeeAsync(
+        int id,
+        EmployeeDto employeeDto);
 
-    Task<Employee?> DeleteEmployeeAsync(int id);
+    Task<EmployeeResponseDto?> DeleteEmployeeAsync(int id);
 }
