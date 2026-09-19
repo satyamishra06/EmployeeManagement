@@ -54,3 +54,14 @@ Content-Type: application/json
   "department": "",
   "salary": -5000
 }
+
+### Test Create Employee - 201 Created
+POST {{EmployeeManagement_HostAddress}}/api/employees
+Content-Type: application/json
+
+{
+  "name": "Aman Verma",
+  "email": "aman@example.com",
+  "department": "Development",
+  "salary": 65000
+}

@@ -47,7 +47,11 @@ public class EmployeesController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        return Ok(employee);
+        return CreatedAtAction(
+            nameof(GetEmployeeById),
+            new { id = employee.Id },
+            employee
+        );
     }
 
     // PUT: api/employees/{id}
