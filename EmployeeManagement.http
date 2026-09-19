@@ -65,3 +65,7 @@ Content-Type: application/json
   "department": "Development",
   "salary": 65000
 }
+
+### Test Employee Not Found
+GET {{EmployeeManagement_HostAddress}}/api/employees/9999
+Accept: application/json
