@@ -1,7 +1,6 @@
-using EmployeeManagement.Data;
 using EmployeeManagement.Models;
+using EmployeeManagement.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Controllers;
 
@@ -9,18 +8,18 @@ namespace EmployeeManagement.Controllers;
 [Route("api/[controller]")]
 public class EmployeesController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IEmployeeService _employeeService;
 
-    public EmployeesController(AppDbContext context)
+    public EmployeesController(IEmployeeService employeeService)
     {
-        _context = context;
+        _employeeService = employeeService;
     }
 
     // GET: api/employees
     [HttpGet]
     public async Task<IActionResult> GetEmployees()
     {
-        var employees = await _context.Employees.ToListAsync();
+        var employees = await _employeeService.GetAllEmployeesAsync();
 
         return Ok(employees);
     }
@@ -29,7 +28,7 @@ public class EmployeesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEmployeeById(int id)
     {
-        var employee = await _context.Employees.FindAsync(id);
+        var employee = await _employeeService.GetEmployeeByIdAsync(id);
 
         if (employee == null)
         {
@@ -43,53 +42,45 @@ public class EmployeesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateEmployee(Employee employee)
     {
-        _context.Employees.Add(employee);
-
-        await _context.SaveChangesAsync();
+        var createdEmployee =
+            await _employeeService.CreateEmployeeAsync(employee);
 
         return CreatedAtAction(
             nameof(GetEmployeeById),
-            new { id = employee.Id },
-            employee
+            new { id = createdEmployee.Id },
+            createdEmployee
         );
     }
 
     // PUT: api/employees/{id}
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateEmployee(int id, Employee employee)
+    public async Task<IActionResult> UpdateEmployee(
+        int id,
+        Employee employee)
     {
-        var existingEmployee = await _context.Employees.FindAsync(id);
+        var updatedEmployee =
+            await _employeeService.UpdateEmployeeAsync(id, employee);
 
-        if (existingEmployee == null)
+        if (updatedEmployee == null)
         {
             return NotFound();
         }
 
-        existingEmployee.Name = employee.Name;
-        existingEmployee.Email = employee.Email;
-        existingEmployee.Department = employee.Department;
-        existingEmployee.Salary = employee.Salary;
-
-        await _context.SaveChangesAsync();
-
-        return Ok(existingEmployee);
+        return Ok(updatedEmployee);
     }
 
     // DELETE: api/employees/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEmployee(int id)
     {
-        var employee = await _context.Employees.FindAsync(id);
+        var deletedEmployee =
+            await _employeeService.DeleteEmployeeAsync(id);
 
-        if (employee == null)
+        if (deletedEmployee == null)
         {
             return NotFound();
         }
 
-        _context.Employees.Remove(employee);
-
-        await _context.SaveChangesAsync();
-
-        return Ok(employee);
+        return Ok(deletedEmployee);
     }
 }
