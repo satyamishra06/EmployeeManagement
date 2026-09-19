@@ -1,3 +1,4 @@
+using EmployeeManagement.Middleware;
 using Scalar.AspNetCore;
 using EmployeeManagement.Data;
 using EmployeeManagement.Services;
@@ -16,6 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
@@ -26,5 +28,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
 
 app.Run();
