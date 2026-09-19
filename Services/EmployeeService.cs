@@ -8,10 +8,14 @@ namespace EmployeeManagement.Services;
 public class EmployeeService : IEmployeeService
 {
     private readonly AppDbContext _context;
+    private readonly ILogger<EmployeeService> _logger;
 
-    public EmployeeService(AppDbContext context)
+    public EmployeeService(
+        AppDbContext context,
+        ILogger<EmployeeService> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<List<EmployeeResponseDto>> GetAllEmployeesAsync()
@@ -30,6 +34,10 @@ public class EmployeeService : IEmployeeService
 
     public async Task<EmployeeResponseDto?> GetEmployeeByIdAsync(int id)
     {
+        _logger.LogInformation(
+            "Fetching employee with ID {EmployeeId}",
+            id);
+
         var employee = await _context.Employees.FindAsync(id);
 
         if (employee == null)
@@ -50,6 +58,10 @@ public class EmployeeService : IEmployeeService
     public async Task<EmployeeResponseDto> CreateEmployeeAsync(
         EmployeeDto employeeDto)
     {
+        _logger.LogInformation(
+            "Creating employee with email {Email}",
+            employeeDto.Email);
+
         var employee = new Employee
         {
             Name = employeeDto.Name,
@@ -76,6 +88,10 @@ public class EmployeeService : IEmployeeService
         int id,
         EmployeeDto employeeDto)
     {
+        _logger.LogInformation(
+            "Updating employee with ID {EmployeeId}",
+            id);
+
         var existingEmployee = await _context.Employees.FindAsync(id);
 
         if (existingEmployee == null)
@@ -102,6 +118,9 @@ public class EmployeeService : IEmployeeService
 
     public async Task<EmployeeResponseDto?> DeleteEmployeeAsync(int id)
     {
+        _logger.LogInformation(
+            "Deleting employee with ID {EmployeeId}",
+            id);
         var employee = await _context.Employees.FindAsync(id);
 
         if (employee == null)
