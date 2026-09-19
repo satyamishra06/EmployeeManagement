@@ -1,4 +1,5 @@
 using EmployeeManagement.Data;
+using EmployeeManagement.DTOs;
 using EmployeeManagement.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,8 +24,16 @@ public class EmployeeService : IEmployeeService
         return await _context.Employees.FindAsync(id);
     }
 
-    public async Task<Employee> CreateEmployeeAsync(Employee employee)
+    public async Task<Employee> CreateEmployeeAsync(EmployeeDto employeeDto)
     {
+        var employee = new Employee
+        {
+            Name = employeeDto.Name,
+            Email = employeeDto.Email,
+            Department = employeeDto.Department,
+            Salary = employeeDto.Salary
+        };
+
         _context.Employees.Add(employee);
 
         await _context.SaveChangesAsync();
@@ -32,7 +41,9 @@ public class EmployeeService : IEmployeeService
         return employee;
     }
 
-    public async Task<Employee?> UpdateEmployeeAsync(int id, Employee employee)
+    public async Task<Employee?> UpdateEmployeeAsync(
+        int id,
+        EmployeeDto employeeDto)
     {
         var existingEmployee = await _context.Employees.FindAsync(id);
 
@@ -41,10 +52,10 @@ public class EmployeeService : IEmployeeService
             return null;
         }
 
-        existingEmployee.Name = employee.Name;
-        existingEmployee.Email = employee.Email;
-        existingEmployee.Department = employee.Department;
-        existingEmployee.Salary = employee.Salary;
+        existingEmployee.Name = employeeDto.Name;
+        existingEmployee.Email = employeeDto.Email;
+        existingEmployee.Department = employeeDto.Department;
+        existingEmployee.Salary = employeeDto.Salary;
 
         await _context.SaveChangesAsync();
 

@@ -1,4 +1,4 @@
-using EmployeeManagement.Models;
+using EmployeeManagement.DTOs;
 using EmployeeManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,10 +40,10 @@ public class EmployeesController : ControllerBase
 
     // POST: api/employees
     [HttpPost]
-    public async Task<IActionResult> CreateEmployee(Employee employee)
+    public async Task<IActionResult> CreateEmployee(EmployeeDto employeeDto)
     {
         var createdEmployee =
-            await _employeeService.CreateEmployeeAsync(employee);
+            await _employeeService.CreateEmployeeAsync(employeeDto);
 
         return CreatedAtAction(
             nameof(GetEmployeeById),
@@ -56,10 +56,10 @@ public class EmployeesController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateEmployee(
         int id,
-        Employee employee)
+        EmployeeDto employeeDto)
     {
         var updatedEmployee =
-            await _employeeService.UpdateEmployeeAsync(id, employee);
+            await _employeeService.UpdateEmployeeAsync(id, employeeDto);
 
         if (updatedEmployee == null)
         {
