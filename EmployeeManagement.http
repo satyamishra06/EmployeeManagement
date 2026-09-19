@@ -28,3 +28,18 @@ Content-Type: application/json
 
 ### Delete Employee
 DELETE {{EmployeeManagement_HostAddress}}/api/employees/1
+
+### Create Employee
+POST {{EmployeeManagement_HostAddress}}/api/employees
+Content-Type: application/json
+
+{
+  "name": "Rahul Sharma",
+  "email": "rahul@example.com",
+  "department": "IT",
+  "salary": 55000
+}
+
+### Get Employee By ID
+GET {{EmployeeManagement_HostAddress}}/api/employees/2
+Accept: application/json
